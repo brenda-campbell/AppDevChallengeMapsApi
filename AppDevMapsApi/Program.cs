@@ -22,4 +22,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// Add a basic endpoint for testing
+app.MapGet("/", () => "Hello World!");
+
 app.Run();

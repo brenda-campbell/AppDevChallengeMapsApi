@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     env:
       DOTNET_ROOT: ${{ github.workspace }}/AppDevMapsApi
       PUBLISH_DIR: ${{ github.workspace }}/AppDevMapsApi/publish
@@ -19,7 +19,7 @@ jobs:
           include-prerelease: true
 
       - name: Print .NET location
-        run: which dotnet
+        run: where dotnet
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
@@ -39,7 +39,7 @@ jobs:
     runs-on: windows-latest
     needs: build
     environment:
-      name: 'dev'
+      name: 'test'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     
     steps:
@@ -53,6 +53,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'azureapimaps'
-          slot-name: 'dev'
+          slot-name: 'test'
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5A50BEA2B9D547B388DC809D13B4128B }}
