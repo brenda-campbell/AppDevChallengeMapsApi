@@ -7,7 +7,8 @@
                 "ms-azuretools.vscode-azurefunctions", // Add this line for Azure Functions
                 "ms-azuretools.vscode-azureappservice", // Add this line for Azure App Service
                 "ms-azuretools.vscode-azurestorage", // Add this line for Azure Storage
-                "ms-azuretools.vscode-account" // Add this line for Azure Account
+                "ms-azuretools.vscode-account", // Add this line for Azure Account
+                "GitHub.Actions"  // Add this line for GitHub Actions
             ]
         }
     }

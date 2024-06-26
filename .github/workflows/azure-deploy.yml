@@ -1,11 +1,13 @@
 name: Build and Deploy to Azure App Service
+
 on:
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    env:
+      DOTNET_ROOT: ${{ github.workspace }}/myapp
     steps:
       - uses: actions/checkout@v4
 
@@ -15,17 +17,20 @@ jobs:
           dotnet-version: '8.x'
           include-prerelease: true
 
+      - name: Print .NET location
+        run: where dotnet
+
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          path: ${{env.DOTNET_ROOT}}
 
   deploy:
     runs-on: windows-latest
