@@ -55,4 +55,4 @@ jobs:
           app-name: 'azureapimaps'
           slot-name: 'test'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5A50BEA2B9D547B388DC809D13B4128B }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_TEST }}
