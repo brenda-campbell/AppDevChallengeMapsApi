@@ -46,6 +46,8 @@ public static class DataRepository
                 }
 
                 var jsonData = File.ReadAllText(filePath);
+                // output the json data to the console
+                Console.WriteLine(jsonData);
                 jsonData = jsonData.Substring(jsonData.IndexOf('[')); // Assuming the array starts immediately after the '=' sign.
                 
                 // Check if jsonData is not null or empty
