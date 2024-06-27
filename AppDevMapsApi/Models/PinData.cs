@@ -38,7 +38,7 @@ public static class DataRepository
             try
             {
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "sampleData", "pindata.js");
-                
+                Console.WriteLine(filePath);
                 // Check if the file exists
                 if (!File.Exists(filePath))
                 {
