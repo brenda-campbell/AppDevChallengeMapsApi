@@ -35,16 +35,52 @@ public static class DataRepository
     {
         if (_pinData == null)
         {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "sampleData", "pindata.js");
-            var jsonData = File.ReadAllText(filePath);
-            jsonData = jsonData.Substring(jsonData.IndexOf('[')); // Assuming the array starts immediately after the '=' sign.
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-            _pinData = JsonSerializer.Deserialize<List<PinData>>(jsonData);  
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+            try
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "sampleData", "pindata.js");
+                
+                // Check if the file exists
+                if (!File.Exists(filePath))
+                {
+                    throw new FileNotFoundException($"The file {filePath} was not found.");
+                }
+
+                var jsonData = File.ReadAllText(filePath);
+                jsonData = jsonData.Substring(jsonData.IndexOf('[')); // Assuming the array starts immediately after the '=' sign.
+                
+                // Check if jsonData is not null or empty
+                if (string.IsNullOrWhiteSpace(jsonData))
+                {
+                    throw new InvalidOperationException("The JSON data is empty or not properly formatted.");
+                }
+
+                _pinData = JsonSerializer.Deserialize<List<PinData>>(jsonData);
+                if (_pinData == null)
+                {
+                    // Handle the case where deserialization returns null
+                    throw new InvalidOperationException("Failed to deserialize the JSON data into a List<PinData>.");
+                }
+            }
+            catch (FileNotFoundException ex)
+            {
+                // Handle file not found exception
+                Console.WriteLine($"Error: {ex.Message}");
+                // Consider logging the error or rethrowing the exception based on your error handling policy
+            }
+            catch (JsonException ex)
+            {
+                // Handle JSON parsing errors
+                Console.WriteLine($"Error parsing JSON: {ex.Message}");
+                // Consider logging the error or rethrowing the exception based on your error handling policy
+            }
+            catch (Exception ex)
+            {
+                // Handle other unforeseen errors
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                // Consider logging the error or rethrowing the exception based on your error handling policy
+            }
         }
 
-#pragma warning disable CS8603 // Possible null reference return.
-        return _pinData;
-#pragma warning restore CS8603 // Possible null reference return.
+        return _pinData ?? new List<PinData>(); // Return an empty list if _pinData is null to avoid null reference errors
     }
 }
